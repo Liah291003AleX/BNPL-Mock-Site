@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Shopping Experience</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { margin-top: 30px; }
+    .product { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+    .btn { padding: 10px 15px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
+    .btn:hover { background-color: #0056b3; }
+    .cart { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Your Shopping Trial</h1>
+  <p>You have a budget of <strong>€100</strong>. Add items to your cart below.</p>
+
+  <div class="product">
+    <p><strong>Running Shoes</strong> - €45</p>
+    <button class="btn" onclick="addToCart('Running Shoes', 45)">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <p><strong>Headphones</strong> - €30</p>
+    <button class="btn" onclick="addToCart('Headphones', 30)">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <p><strong>Hoodie</strong> - €40</p>
+    <button class="btn" onclick="addToCart('Hoodie', 40)">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <p><strong>Smartwatch</strong> - €80</p>
+    <button class="btn" onclick="addToCart('Smartwatch', 80)">Add to Cart</button>
+  </div>
+
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <p><strong>Total: €<span id="total">0</span></strong></p>
+    <button class="btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+  </div>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(item, price) {
+      cart.push(item);
+      total += price;
+      updateCart();
+    }
+
+    function updateCart() {
+      const list = document.getElementById('cart-items');
+      list.innerHTML = '';
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        list.appendChild(li);
+      });
+      document.getElementById('total').textContent = total;
+    }
+
+    function proceedToCheckout() {
+      const useBNPL = confirm("Do you want to use Buy Now Pay Later (OK) or Card Payment (Cancel)?");
+      let payment = useBNPL ? 'bnpl' : 'card';
+
+      if (useBNPL) {
+        const agreed = confirm("BNPL is a form of credit. It may involve late fees and could affect your financial standing. Do you understand and agree?");
+        if (!agreed) return;
+      }
+
+      const url = `https://your-qualtrics-link.com/survey?payment=${payment}&total=${total}`;
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
